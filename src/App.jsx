@@ -16,24 +16,29 @@ const initialEdges = [];
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  const [xValue, setX] = useState(0);
+  const [xValue, setX] = useState(100);
+  const [yValue, setY] = useState(100);
 
   const onConnect = useCallback((params) => setEdges((eds) => addEdge(params, eds)), [setEdges]);
 
   const addNode = useCallback(() => {
     setX(xValue + 200);
+    if(xValue > 1000) {
+      setX(100);
+      setY(yValue + 100);
+    }
     setNodes((els) => {
       console.log(els);
       return [
         ...els,
         {
           id: `state-${Math.random()}`,
-          position: { x: xValue, y: 100 },
-          data: { label: "yo" }
+          position: { x: xValue, y: yValue },
+          data: { label: "new-state" }
         }
       ];
     });
-  }, [xValue]);
+  }, [xValue, yValue]);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
